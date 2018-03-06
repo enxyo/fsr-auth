@@ -1,0 +1,10 @@
+.text-button {
+    display: flex;
+    justify-content:center;
+    align-content:center;
+    flex-direction:column;
+}
+
+.text-button a {
+    text-decoration: none;
+}

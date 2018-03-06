@@ -1,0 +1,8 @@
+body {
+    background-color: #000000;
+    background-image: url("../img/bg_redsun.jpg");
+    background-repeat: no-repeat;
+    background-position: top;
+    overflow-x:hidden;
+    overflow-y:hidden;
+}
