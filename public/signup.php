@@ -41,10 +41,16 @@
                             <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                             <label for="inputPassword">Password</label>
                         </div>
-
+                        <div class="alert alert-danger" role="alert">
+                            Existing forum users check below!
+                        </div>
+                        <div class="custom-control custom-checkbox legacyBox">
+                            <input type="checkbox" class="custom-control-input" id="legacyAccount">
+                            <label class="custom-control-label text-primary" for="legacyAccount">I already got a forum account.</label>
+                        </div>
                             <div class="row">
                                 <div class="col-md-auto text-button">
-                                    <a href="signup">Already a member? Sign in</a>
+                                    <a href="signin">Already a member? Sign in</a>
                                 </div>
                                 <div class="col-sm">
                                     <button class="btn btn-lg btn btn-outline-primary btn-block" type="submit">Sign up</button>

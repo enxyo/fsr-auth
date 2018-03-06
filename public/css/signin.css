@@ -8,3 +8,7 @@
 .text-button a {
     text-decoration: none;
 }
+
+.legacyBox {
+    margin-bottom: 1rem;
+}
