@@ -31,27 +31,20 @@
                         <div class="text-center mb-4">
                             <!--<img class="mb-2" src="img/fsr_logo.png" alt="" width="250" height="250">-->
                             <h1 class="h3 text-uppercase text-light font-weight-normal">Free-Space-Ranger</h1>
-                            <h1 class="h6 text-uppercase text-primary font-weight-normal">Sign in</h1>
+                            <h1 class="h6 text-uppercase text-primary font-weight-normal">Reset password</h1>
                         </div>
                         <div class="form-label-group">
                             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
                             <label for="inputEmail">Email</label>
                         </div>
-                        <div class="form-label-group">
-                            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                            <label for="inputPassword">Password</label>
-                        </div>
-                        <div class="text-right text-button">
-                            <a href="reset-password">Forgotten your password?</a>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-auto text-button">
-                                <a href="signup">Nedd an account? Sign up</a>
+                            <div class="row">
+                                <div class="col-md-auto text-button">
+                                    <a href="signin">Nevermind, I got it.</a>
+                                </div>
+                                <div class="col-sm">
+                                    <button class="btn btn-lg btn btn-outline-primary btn-block" type="submit">Reset password</button>
+                                </div>
                             </div>
-                            <div class="col-sm">
-                                <button class="btn btn-lg btn btn-outline-primary btn-block" type="submit">Sign in</button>
-                            </div>
-                        </div>
 
 
                         <p class="mt-5 mb-3 text-muted text-center">&copy; 2018</p>
