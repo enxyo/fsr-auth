@@ -1,5 +1,24 @@
 <?php
 
+require_once 'config/db.php';
+
+$email = $password = $legacyAccount = "";
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    
+
+
+    // Validate password
+    if(empty(trim($_POST['password']))){
+        $password_err = "Please enter a password.";
+    } elseif(strlen(trim($_POST['password'])) < 6){
+        $password_err = "Password must have atleast 6 characters.";
+    } else{
+        $password = trim($_POST['password']);
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,18 +53,18 @@
                             <h1 class="h6 text-uppercase text-primary font-weight-normal">Sign up</h1>
                         </div>
                         <div class="form-label-group">
-                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" value="<?php echo $email; ?>" required autofocus>
                             <label for="inputEmail">Email</label>
                         </div>
                         <div class="form-label-group">
-                            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                            <input type="password" id="inputPassword" class="form-control" placeholder="Password" value="<?php echo $password; ?>" required>
                             <label for="inputPassword">Password</label>
                         </div>
                         <div class="alert alert-danger" role="alert">
                             Existing forum users check below!
                         </div>
                         <div class="custom-control custom-checkbox legacyBox">
-                            <input type="checkbox" class="custom-control-input" id="legacyAccount">
+                            <input type="checkbox" class="custom-control-input" id="legacyAccount" value="<?php echo $legacyAccount; ?>">
                             <label class="custom-control-label text-primary" for="legacyAccount">I already got a forum account.</label>
                         </div>
                             <div class="row">

@@ -6,3 +6,6 @@
 
 # ignore infohphp
 /public/info.php
+
+#ignore db config
+/public/config/db.php
