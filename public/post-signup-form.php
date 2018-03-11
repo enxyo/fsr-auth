@@ -45,7 +45,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $statement->execute(array($email));
     $count = $statement->rowCount();
 
-    if($count = 0) {
+    if($count == 0) {
 
         // Auth password hashing
         $hash_options = [

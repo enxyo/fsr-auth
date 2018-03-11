@@ -79,13 +79,19 @@
                         $.ajax({
                             type: "POST",
                             url: "post-signup-form.php",
+                            dataType: 'JSON',
                             data: "formEmail="+formEmail+"&formPassword="+formPassword+"&formLegacyAccount="+formLegacyAccount,
                             success: function(data){
-                                $('#success_message').fadeIn().html(data);
-                                setTimeout(function() {
-                                    window.location.replace("https://www.free-space-ranger.org:444/auth/signin");
-                                }, 2000 );
-
+                                var json = JSON.parse(JSON.stringify(data));
+                                if(json[0].response == "success"){
+                                    $('#success_message').fadeIn().html(json[0].message);
+                                    setTimeout(function() {
+                                        window.location.replace("https://www.free-space-ranger.org:444/auth/signin");
+                                    }, 2000 );
+                                }
+                                if(json[0].response == "error"){
+                                    $("#error_message").show().html("Account already exists!<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>");
+                                }
                             }
                         });
                     }
