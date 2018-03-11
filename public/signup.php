@@ -32,12 +32,12 @@
                     <h1 class="h6 text-uppercase text-primary font-weight-normal">Sign up</h1>
                 </div>
                 <div class="form-label-group">
-                    <input type="email" id="formEmail" class="form-control" name="formEmail" placeholder="Email address" required autofocus>
-                    <label for="inputEmail">Email</label>
+                    <input type="email" id="formEmail" class="form-control" name="formEmail" placeholder="Email" autofocus>
+                    <label for="formEmail">Email</label>
                 </div>
                 <div class="form-label-group">
-                    <input type="password" id="formPassword" class="form-control" name="formPassword" placeholder="Password" required>
-                    <label for="inputPassword">Password</label>
+                    <input type="password" id="formPassword" class="form-control" name="formPassword" placeholder="Password">
+                    <label for="formPassword">Password</label>
                 </div>
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
                     Existing forum users check below!
@@ -47,7 +47,7 @@
                 </div>
                 <div class="custom-control custom-checkbox legacyBox">
                     <input type="checkbox" class="custom-control-input" id="formLegacyAccount" name="formLegacyAccount" value="1">
-                    <label class="custom-control-label text-primary" for="legacyAccount">I already got a forum account.</label>
+                    <label class="custom-control-label text-primary" for="formLegacyAccount">I already got a forum account.</label>
                 </div>
                 <div class="row">
                     <div class="col-md-auto text-button">
@@ -59,8 +59,7 @@
                 </div>
             </form>
             <div class="statusBox">
-                <div class="ajax_response alert alert-danger" id="error_message" role="alert">
-                    Error!
+                <div class="ajax_response alert alert-danger alert-dismissible fade show" id="error_message" role="alert">
                 </div>
                 <div class="ajax_response alert alert-success" id="success_message" role="alert">
                     Success!
@@ -74,7 +73,7 @@
                     var formLegacyAccount = $("#formLegacyAccount").val();
 
                     if(formEmail == "" || formPassword == "" ) {
-                        $("#error_message").show().html("Email & Password are required!");
+                        $("#error_message").show().html("Email & Password are required!<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>");
                     } else {
                         $("#success_message").html("").hide();
                         $.ajax({
