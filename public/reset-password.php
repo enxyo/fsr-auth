@@ -26,30 +26,34 @@
     </head>
     <body>
         <div class="container">
-
-                    <form class="form-signin">
-                        <div class="text-center mb-4">
-                            <!--<img class="mb-2" src="img/fsr_logo.png" alt="" width="250" height="250">-->
-                            <h1 class="h3 text-uppercase text-light font-weight-normal">Free-Space-Ranger</h1>
-                            <h1 class="h6 text-uppercase text-primary font-weight-normal">Reset password</h1>
-                        </div>
-                        <div class="form-label-group">
-                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                            <label for="inputEmail">Email</label>
-                        </div>
-                            <div class="row">
-                                <div class="col-md-auto text-button">
-                                    <a href="signin">Nevermind, I got it.</a>
-                                </div>
-                                <div class="col-sm">
-                                    <button class="btn btn-lg btn btn-outline-primary btn-block" type="submit">Reset password</button>
-                                </div>
-                            </div>
-
-
-                        <p class="mt-5 mb-3 text-muted text-center">&copy; 2018</p>
-                    </form>
-
+            <form class="form-signin" id="reset-form" method="post">
+                <div class="text-center mb-4">
+                    <!--<img class="mb-2" src="img/fsr_logo.png" alt="" width="250" height="250">-->
+                    <h1 class="h3 text-uppercase text-light font-weight-normal">Free-Space-Ranger</h1>
+                    <h1 class="h6 text-uppercase text-primary font-weight-normal">Reset password</h1>
+                </div>
+                <div class="form-label-group">
+                    <input type="email" id="formEmail" class="form-control" placeholder="Email address" autofocus>
+                    <label for="inputEmail">Email</label>
+                </div>
+                <div class="row">
+                    <div class="col-md-auto text-button">
+                        <a href="signin">Nevermind, I got it.</a>
+                    </div>
+                    <div class="col-sm">
+                        <button class="btn btn-lg btn btn-outline-primary btn-block" type="submit">Reset password</button>
+                    </div>
+                </div>
+            </form>
+            <div class="statusBox">
+                <div class="ajax_response alert alert-danger alert-dismissible fade show" id="error_message" role="alert">
+                    Error!
+                </div>
+                <div class="ajax_response alert alert-success" id="success_message" role="alert">
+                    Success!
+                </div>
+            </div>
+            <p class="mt-5 mb-3 text-muted text-center">&copy; 2018</p>
         </div>
     </body>
 </html>
