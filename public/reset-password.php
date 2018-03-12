@@ -53,6 +53,36 @@
                     Success!
                 </div>
             </div>
+            <script>
+                $("#reset-form").submit(function(e) {
+                    e.preventDefault();
+                    var formEmail = $("#formEmail").val();
+
+                    if(formEmail == "") {
+                        $("#error_message").show().html("Email is required!<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>");
+                    } else {
+                        $("#success_message").html("").hide();
+                        $.ajax({
+                            type: "POST",
+                            url: "post-reset-password-form.php",
+                            dataType: 'JSON',
+                            data: "formEmail="+formEmail,
+                            success: function(data){
+                                var json = JSON.parse(JSON.stringify(data));
+                                if(json[0].response == "success"){
+                                    $('#success_message').fadeIn().html(json[0].message);
+                                    setTimeout(function() {
+                                        window.location.replace("https://www.free-space-ranger.org:444/auth/signin");
+                                    }, 2000 );
+                                }
+                                if(json[0].response == "error"){
+                                    $("#error_message").show().html("Something went wrong!<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>");
+                                }
+                            }
+                        });
+                    }
+                })
+            </script>
             <p class="mt-5 mb-3 text-muted text-center">&copy; 2018</p>
         </div>
     </body>

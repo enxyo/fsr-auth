@@ -13,7 +13,7 @@ if(isset($_GET['id']) && $_GET['id'] !== ''){
         $result = $statement->fetch();
 
         // Prepare SQL
-        $changeStatus = $pdo->prepare("UPDATE users SET users.status=? WHERE users.id = ?");
+        $changeStatus = $pdo->prepare("UPDATE users SET users.status=?, users.modified=now() WHERE users.id = ?");
         $delVerification = $pdo->prepare("DELETE FROM users_verify WHERE users_verify.userID = ?");
 
         if($count != 0) {
@@ -34,28 +34,6 @@ if(isset($_GET['id']) && $_GET['id'] !== ''){
 } else {
     $success = 0;
 }
-
-
-
-/*
-    $accountId = $_GET['id'];
-    $key = $_GET['key'];
-
-    // Check User DB
-    $statement = $pdo->prepare("SELECT * FROM users_verify WHERE users_verify.userID = ?");
-    $statement->execute(array($accountId));
-    $count = $statement->rowCount();
-
-    if($count != 0) {
-        if($key == $statement[0].key){
-            $success = 1;
-        } else {
-            $success = 0;
-        }
-    } else {
-        $success = 0;
-    }
-*/
 
 ?>
 <!DOCTYPE html>
