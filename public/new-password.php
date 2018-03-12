@@ -1,5 +1,15 @@
 <?php
-$show = 1; // 0 - error / 1 - password form
+
+if(isset($_GET['id']) && $_GET['id'] !== ''){
+    $accountId = $_GET['id'];
+    if(isset($_GET['key']) && $_GET['key'] !== ''){
+        $key = $_GET['key'];
+
+        $show = 1; // 0 - error / 1 - password form
+    }
+} else {
+    $show = 0; // 0 - error / 1 - password form
+}
 ?>
 
 <!DOCTYPE html>
