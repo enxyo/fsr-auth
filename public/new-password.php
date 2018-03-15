@@ -79,6 +79,8 @@ if(isset($_GET['id']) && $_GET['id'] !== ''){
         </div>
         <script>
             var show = "<?php echo $show; ?>";
+            var id = "<?php echo $accountId; ?>";
+            var key = "<?php echo $key; ?>";
             if(show == 1){
                 $("#show-form").show();
             }
@@ -94,25 +96,29 @@ if(isset($_GET['id']) && $_GET['id'] !== ''){
                 if(formPassword == "" || formPassword2 == "" ) {
                     $("#error_message").show().html("Both fields are required!<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>");
                 } else {
-                    $("#success_message").html("").hide();
-                    $.ajax({
-                        type: "POST",
-                        url: "post-new-password-form.php",
-                        dataType: 'JSON',
-                        data: "formPassword="+formPassword+"&formPassword2="+formPassword2,
-                        success: function(data){
-                            var json = JSON.parse(JSON.stringify(data));
-                            if(json[0].response == "success"){
-                                $('#success_message').fadeIn().html(json[0].message);
-                                setTimeout(function() {
-                                    window.location.replace("https://www.free-space-ranger.org:444/auth/signin");
-                                }, 2000 );
+                    if(formPassword != formPassword2) {
+                        $("#error_message").show().html("Passwords do not match!<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>");
+                    } else {
+                        $("#success_message").html("").hide();
+                        $.ajax({
+                            type: "POST",
+                            url: "post-new-password-form.php",
+                            dataType: 'JSON',
+                            data: "formPassword="+formPassword+"&id="+id+"&key="+key,
+                            success: function(data){
+                                var json = JSON.parse(JSON.stringify(data));
+                                if(json[0].response == "success"){
+                                    $('#success_message').fadeIn().html(json[0].message);
+                                    setTimeout(function() {
+                                        window.location.replace("https://www.free-space-ranger.org:444/auth/signin");
+                                    }, 2000 );
+                                }
+                                if(json[0].response == "error"){
+                                    $("#error_message").show().html("Account already exists!<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>");
+                                }
                             }
-                            if(json[0].response == "error"){
-                                $("#error_message").show().html("Account already exists!<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>");
-                            }
-                        }
-                    });
+                        });
+                    }
                 }
             })
         </script>
