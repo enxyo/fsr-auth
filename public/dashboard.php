@@ -1,5 +1,25 @@
 <?php
+require_once 'config/db.php';
+require_once 'classes/authTokenCollection.php';
 
+if (isset($_COOKIE['fsrAuthCookie'])) {
+    $string = $_COOKIE['fsrAuthCookie'];
+    $selector = substr($string, 0, 12);
+    $validator = substr($string, -64);
+    $hashedValidator = hashValidator($validator);
+
+    // prepare statement
+    $checkToken = $pdo->prepare("SELECT * FROM auth_tokens WHERE auth_tokens.selector = ? AND auth_tokens.hashedValidator = ?");
+
+    // check auth token in db
+    $checkToken->execute(array($selector, $hashedValidator));
+    if ($checkToken->rowCount() == 1) {
+        $result = $checkToken->fetch();
+        $userid = $result['userid'];
+    } else {
+        echo "fail";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

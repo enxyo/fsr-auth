@@ -62,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             //print_r($createToken->errorInfo());
 
             // set the cookies
-            setcookie("fsrAuthCookie", $dbSelector.$validator, $expires, "/auth/", "www.free-space-ranger.org:444", 1);
+            setcookie('fsrAuthCookie', $dbSelector.$validator, time() + 60*60*24*30, '/auth/');
 
             $response = "success";
             $res_message = "Login successful!";

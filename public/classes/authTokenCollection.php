@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-require_once '../config/db.php';
 
 function generateRandomString($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -17,6 +15,7 @@ function hashValidator($string) {
     return $hash;
 }
 
+/*
 function createAuthToken($userid) {
 
     $dbSelector = generateRandomString(12);
@@ -40,6 +39,7 @@ function createAuthToken($userid) {
 
 //    return "done";
 }
+*/
 
 function grabAuthToken() {
 
@@ -49,7 +49,4 @@ function extendAuthToken() {
 
 }
 
-createAuthToken(1);
-//echo "1";
-//echo $test;
 ?>
