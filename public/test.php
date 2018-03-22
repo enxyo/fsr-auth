@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 
+/*
 function generateRandomString($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -20,5 +21,14 @@ echo "remove";
 
 //setcookie('fsrAuthCookie', $dbSelector.$validator, time() + 43200, '/auth/');
 //echo "set";
+*/
+
+require_once 'config/db.php';
+require_once 'classes/authTokenCollection.php';
+
+$out = $authTokenCollection->classTest();
+
+echo "email: ";
+echo $out;
 
 ?>

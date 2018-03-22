@@ -49,4 +49,23 @@ function extendAuthToken() {
 
 }
 
+
+
+class authTokenCollection {
+
+    function classTest() {
+        $db = new Database();
+        // prepare statement
+        $db->query('SELECT * FROM users WHERE id = :id');
+        //$test = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+        $db->bind(':id', '1');
+        // execute
+        //$test->execute(array(1));
+        //$result = $test->fetch();
+        $row = $db->single();
+        return $row['email'];
+    }
+}
+
+$authTokenCollection = new authTokenCollection;
 ?>
