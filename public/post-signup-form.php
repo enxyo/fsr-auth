@@ -1,50 +1,29 @@
 <?php
 
 require_once 'config/db.php';
+require_once 'classes/authTokenCollection.php';
+require_once 'classes/ipb3Collection.php';
+
+$db = new Database();
 
 $email = $password = "";
 $legacyAccount = "0";
 $auth_password_hash = $ipb3_password_hash = $ipb3Salt = "";
-
-function generateIPB3PasswordSalt($len=5){
-    $salt = '';
-
-    for ( $i = 0; $i < $len; $i++ )
-    {
-        $num   = mt_rand(33, 126);
-
-        if ( $num == '92' )
-        {
-            $num = 93;
-        }
-
-        $salt .= chr( $num );
-    }
-
-    return $salt;
-}
-
-function generateRandomString($length = 64) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
-    }
-    return $randomString;
-}
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $email = $_REQUEST['formEmail'];
     $password = $_REQUEST['formPassword'];
 
-    // Check User DB
-    $statement = $pdo->prepare("SELECT * FROM users WHERE users.email = ?");
-    $statement->execute(array($email));
-    $count = $statement->rowCount();
+    // # Check User DB
+    // prepare statement
+    $db->query("SELECT * FROM users WHERE users.email = :email");
+    // bind values
+    $db->bind(':email', $email);
+    // execute
+    $checkUser = $db->single();
 
-    if($count == 0) {
+    if($db->rowCount() == 0) {
 
         // Auth password hashing
         $hash_options = [
@@ -53,7 +32,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $auth_password_hash = password_hash($password, PASSWORD_BCRYPT, $hash_options);
 
         // IPB3 password hashing
-        $ipb3Salt = generateIPB3PasswordSalt();
+        $ipb3Salt = $ipb3Collection->generateIPB3PasswordSalt();
         $ipb3_password_hash = md5(md5($ipb3Salt).md5($password));
 
         // Legacy account
@@ -62,17 +41,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
 
 
-        // Insert into DB
-        $statement = $pdo->prepare("INSERT INTO users (users.email,users.auth_password_hash,users.status,users.ipb3_password_hash,users.ipb3_password_salt,users.legacy) VALUES (?,?,?,?,?,?)");
-        $statement->execute(array($email, $auth_password_hash, 'validating', $ipb3_password_hash, $ipb3Salt, $legacyAccount));
-        //$statement->debugDumpParams();
+        // # Insert into DB
+        // prepare statement
+        $db->query("INSERT INTO users (users.email,users.auth_password_hash,users.status,users.ipb3_password_hash,users.ipb3_password_salt,users.legacy) VALUES (:email,:auth_password_hash,:status,:ipb3_password_hash,:ipb3_password_salt,:legacy)");
+        // bind values
+        $db->bind(':email', $email);
+        $db->bind(':auth_password_hash', $auth_password_hash);
+        $db->bind(':status', 'validating');
+        $db->bind(':ipb3_password_hash', $ipb3_password_hash);
+        $db->bind(':ipb3_password_salt', $ipb3Salt);
+        $db->bind(':legacy', $legacyAccount);
+        // execute
+        $db->execute();
+
 
         // Insert into DB
-        $accountId = $pdo->lastInsertId();
-        $key = generateRandomString();
+        $accountId = $db->lastInsertId();
+        $key = $authTokenCollection->generateRandomString(64);
 
-        $statement = $pdo->prepare("INSERT INTO users_verify (users_verify.userID,users_verify.key) VALUES (?,?)");
-        $statement->execute(array($accountId, $key));
+        // prepare statement
+        $db->query("INSERT INTO users_verify (users_verify.userID,users_verify.key) VALUES (:userid,:key)");
+        // bind values
+        $db->bind(':userid', $accountId);
+        $db->bind(':key', $key);
+        // execute
+        $db->execute();
 
         // Send mail
         $subject = 'Account Registration at FSR Auth';

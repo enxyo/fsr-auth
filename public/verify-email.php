@@ -1,26 +1,42 @@
 <?php
 require_once 'config/db.php';
 
+$db = new Database();
+
 if(isset($_GET['id']) && $_GET['id'] !== ''){
     $accountId = $_GET['id'];
     if(isset($_GET['key']) && $_GET['key'] !== ''){
         $key = $_GET['key'];
 
-        // Check User DB
-        $statement = $pdo->prepare("SELECT * FROM users_verify WHERE users_verify.userID = ?");
-        $statement->execute(array($accountId));
-        $count = $statement->rowCount();
-        $result = $statement->fetch();
+        // # Check User DB
+        // prepare statement
+        $db->query("SELECT * FROM users_verify WHERE users_verify.userID = :userid");
+        // bind values
+        $db->bind(':userid', $accountId);
+        // execute
+        $checkUser = $db->single();
 
-        // Prepare SQL
-        $changeStatus = $pdo->prepare("UPDATE users SET users.status=?, users.modified=now() WHERE users.id = ?");
-        $delVerification = $pdo->prepare("DELETE FROM users_verify WHERE users_verify.userID = ?");
-
-        if($count != 0) {
-            if($key == $result['key']){
+        if($db->rowCount() == 1) {
+            if($key == $checkUser['key']){
                 $success = 1;
-                $changeStatus->execute(array('active', $accountId));
-                $delVerification->execute(array($accountId));
+
+                // # change status
+                // prepare statement
+                $db->query("UPDATE users SET users.status=:status, users.modified=now() WHERE users.id = :userid");
+                // bind values
+                $db->bind(':status', 'active');
+                $db->bind(':userid', $accountId);
+                // execute
+                $db->execute();
+
+                // # delete verification
+                // prepare statement
+                $db->query("DELETE FROM users_verify WHERE users_verify.userID = :userid");
+                // bind values
+                $db->bind(':userid', $accountId);
+                // execute
+                $db->execute();
+
             } else {
                 $success = 0;
             }
