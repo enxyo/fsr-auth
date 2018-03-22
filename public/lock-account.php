@@ -1,13 +1,19 @@
 <?php
 require_once 'config/db.php';
 
+$db = new Database();
+
 if(isset($_GET['id']) && $_GET['id'] !== ''){
     $accountId = $_GET['id'];
 
-    // Prepare SQL
-    $changeStatus = $pdo->prepare("UPDATE users SET users.status=?, users.modified=now() WHERE users.id = ?");
+    // prepare statement
+    $db->query("UPDATE users SET users.status=:status, users.modified=now() WHERE users.id = :id");
+    // bind values
+    $db->bind(':status', 'locked');
+    $db->bind(':id', $accountId);
+    // execute
+    $db->execute();
 
-    $changeStatus->execute(array('locked', $accountId));
     $success = 1;
 } else {
     $success = 0;
