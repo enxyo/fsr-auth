@@ -19,6 +19,8 @@ class authTokenCollection {
 
     function createAuthToken($userid) {
 
+        $db = new Database();
+
         $dbSelector = generateRandomString(12);
         $validator = generateRandomString(64);
         $dbValidator = hashValidator($validator);

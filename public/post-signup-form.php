@@ -32,7 +32,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $auth_password_hash = password_hash($password, PASSWORD_BCRYPT, $hash_options);
 
         // IPB3 password hashing
-        $ipb3Salt = ipb3Collection->generateIPB3PasswordSalt();
+        $ipb3Salt = $ipb3Collection->generateIPB3PasswordSalt();
         $ipb3_password_hash = md5(md5($ipb3Salt).md5($password));
 
         // Legacy account
@@ -57,7 +57,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         // Insert into DB
         $accountId = $db->lastInsertId();
-        $key = authTokenCollection->generateRandomString(64);
+        $key = $authTokenCollection->generateRandomString(64);
 
         // prepare statement
         $db->query("INSERT INTO users_verify (users_verify.userID,users_verify.key) VALUES (:userid,:key)");
