@@ -8,7 +8,7 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
     $string = $_COOKIE['fsrAuthCookie'];
     $selector = substr($string, 0, 12);
     $validator = substr($string, -64);
-    $hashedValidator = hashValidator($validator);
+    $hashedValidator = $authTokenCollection->hashValidator($validator);
 
     // prepare statement
     $db->query("SELECT * FROM auth_tokens WHERE auth_tokens.selector = :selector AND auth_tokens.hashedValidator = :hashValidator");
@@ -19,7 +19,6 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
     $checkToken = $db->single();
 
     // check auth token in db
-    $checkToken->execute(array($selector, $hashedValidator));
     if ($db->rowCount() == 1) {
         $userid = $checkToken['userid'];
     } else {
