@@ -44,14 +44,48 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
 
 
         <!-- Custom styles for this template -->
-        <link href="css/form.css" rel="stylesheet">
+        <link href="css/dashboard.css" rel="stylesheet">
+        <link href="css/header.css" rel="stylesheet">
+        <link href="css/footer.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-        <link href="css/bg.css" rel="stylesheet">
     </head>
     <body>
-        <div class="container">
+        <header class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <span class="text-uppercase font-weight-bold text-danger">FSR Auth</span>
+                    </div>
+                    <div class="col-">
+                    </div>
+                    <div class="col-md text-right">
+                        <span class="text-muted m-3">email@email.com</span>
+                        <a href="#" class="btn btn-outline-danger">
+                            <span class="fa fa-cog"></span>
+                        </a>
+                        <button type="button" class="btn btn-outline-danger">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Begin page content -->
+        <main role="main" class="container">
 
-            <p class="mt-5 mb-3 text-muted text-center">&copy; 2018</p>
-        </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <span class="text-muted">&copy; 2018 Free-Space-Ranger</span>
+                    </div>
+                    <div class="col-sm-8 text-right">
+                        <a class="text-danger m-1" target="_blank" href="https://www.free-space-ranger.org/forum/">Forum</a>
+                        <a class="text-danger m-1" target="_blank" href="https://discord.gg/qte4x2B">Discord</a>
+                        <a class="text-danger m-1" href="ts3server://85.214.142.178?port=9987">Teamspeak</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>
