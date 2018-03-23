@@ -26,15 +26,13 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
 
         // ### start api work
         if(isset($_GET['code']) && $_GET['code'] !== ''){
-            $tokens = authInit($_GET['code'],$client_id,$client_secret);
-            $tokens_response = json_decode($tokens, TRUE);
-            $char = getCharId($tokens_response['access_token']);
-            $char_response = json_decode($char, TRUE);
+            $tokens = json_decode(authInit($_GET['code'],$client_id,$client_secret), TRUE);
+            $char = json_decode(getCharId($tokens['access_token']), TRUE);
 
-            echo $char_response['CharacterID'];
-            echo $char_response['CharacterName'];
-            echo $tokens_response['access_token'];
-            echo $tokens_response['refresh_token'];
+            storeApi($char['CharacterID'], $char['CharacterName'], $char['TokenType'], $tokens['access_token'], $tokens['refresh_token'], $userid);
+
+            header("Location: https://www.free-space-ranger.org:444/auth/eve-api"); /* Redirect browser */
+            exit();
         }
 
     } else {

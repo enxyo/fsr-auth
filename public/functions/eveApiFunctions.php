@@ -57,9 +57,26 @@ function getCharId($accessToken) {
     ));
     // Send the request
     $response = curl_exec($ch);
-    
+
     return $response;
 
+}
+
+function storeApi($CharacterID,$CharacterName,$TokenType,$access_token,$refresh_token, $authUserId) {
+
+    $db = new Database();
+
+    // prepare statement
+    $db->query("INSERT INTO api_tokens (api_tokens.characterID, api_tokens.accessToken, api_tokens.refreshToken, api_tokens.characterName, api_tokens.tokenType, api_tokens.authUserId) VALUES (:CharacterID, :accessToken, :refreshToken, :characterName, :tokenType, :authUserId)");
+    // bind values
+    $db->bind(':CharacterID', $CharacterID);
+    $db->bind(':accessToken', $access_token);
+    $db->bind(':refreshToken', $refresh_token);
+    $db->bind(':characterName', $CharacterName);
+    $db->bind(':tokenType', $TokenType);
+    $db->bind(':authUserId', $authUserId);
+    // execute
+    $db->execute();
 }
 
 ?>
