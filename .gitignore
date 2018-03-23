@@ -9,3 +9,6 @@
 
 #ignore db config
 /public/config/db.php
+
+#ignore eve api config
+/public/config/eveApi.php
