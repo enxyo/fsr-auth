@@ -85,7 +85,7 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
             </div>
         </header>
         <!-- Begin page content -->
-        <main role="main" class="container">
+        <main role="main" class="container dash-content">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Willkommen im FSR Auth System</h5>
@@ -133,7 +133,7 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
                         <h5 class="card-title">EVE API</h5>
                         <p class="card-text">Notwendig für alle EVE Spieler.</p>
                         <p class="card-text">Verwaltung der Api Schlüssel. Bitte alle FSR Charakter hinterlegen.</p>
-                        <a href="#" class="btn btn-primary"><span class="fa fa-link"></span> API Management</a>
+                        <a href="eve-api" class="btn btn-primary"><span class="fa fa-link"></span> API Management</a>
                     </div>
                 </div>
 
@@ -142,7 +142,7 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
                     <div class="card-body">
                         <h5 class="card-title">Discord</h5>
                         <p class="card-text">soon</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <a target="_blank" href="https://discord.gg/qte4x2B" class="btn btn-primary">Open Discord</a>
                     </div>
                 </div>
             </div>
