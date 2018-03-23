@@ -30,6 +30,13 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
         // execute
         $getUser = $db->single();
 
+        // get api
+        $db->query("SELECT * FROM api_tokens WHERE api_tokens.authUserId = :id");
+        $db->bind(':id', $userid);
+        $apis = $db->resultset();
+
+        $api_count = $db->rowCount();
+
     } else {
         unset($_COOKIE['fsrAuthCookie']);
         setcookie('fsrAuthCookie', '', time() - 3600, '/auth/'); // empty value and old timestamp
@@ -90,31 +97,18 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
             <table class="table table-striped table-dark">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Character</th>
+                        <th scope="col">CharacterID</th>
+                        <th scope="col">Type</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                <?php
+                    for ($i = 0; $i < $api_count; $i++) {
+                        echo '<tr><th scope="row">'. $apis[$i][characterName] .'</th><td>'. $apis[$i][characterID] .'</td><td>'. $apis[$i][tokenType] .'</td><td class="text-right"><a href="" class="btn btn-outline-danger"><span class="fa fa-trash"></span></a></td>';
+                    }
+                ?>
                 </tbody>
             </table>
             <a href="<?php echo $apiAuthUrl ?>" role="button" class="btn btn-outline-danger">API hinzufügen</a>
