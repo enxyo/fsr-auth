@@ -1,4 +1,9 @@
 <?php
+
+/****************************
+REMOVE '_default' FROM FILE NAME
+****************************/
+
 //DB credentials
 define('DB_HOST','');
 define('DB_NAME','');
