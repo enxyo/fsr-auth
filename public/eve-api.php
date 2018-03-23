@@ -1,5 +1,6 @@
 <?php
 require_once 'config/db.php';
+require_once 'config/eveApi.php';
 require_once 'classes/authTokenCollection.php';
 
 $db = new Database();
@@ -116,6 +117,7 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
                     </tr>
                 </tbody>
             </table>
+            <a href="<?php echo $apiAuthUrl ?>" role="button" class="btn btn-outline-danger">API hinzufügen</a>
         </main>
         <footer class="footer">
             <div class="container">
