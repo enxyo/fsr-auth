@@ -32,6 +32,14 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
             storeApi($char['CharacterID'], $char['CharacterName'], $char['TokenType'], $tokens['access_token'], $tokens['refresh_token'], $userid);
         }
 
+        // ### set primary char
+        if(isset($_GET['charid']) && $_GET['charid'] !== ''){
+
+            setPrimaryChar($_GET['charid'],$userid);
+
+        }
+
+
         // prepare statement
         $db->query("SELECT * FROM users WHERE users.id = :id");
         // bind values
@@ -81,6 +89,10 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
         <link href="css/footer.css" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
+        <script>
+            window.history.replaceState({}, document.title, "/auth/eve-api");
+        </script>
+
     </head>
     <body>
         <header class="header">
@@ -115,7 +127,10 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
                 <tbody>
                 <?php
                     for ($i = 0; $i < $api_count; $i++) {
-                        echo '<tr><th scope="row">'. $apis[$i][characterName] .'</th><td>'. $apis[$i][characterID] .'</td><td>'. $apis[$i][tokenType] .'</td><td class="text-right"><a href="" class="btn btn-outline-danger"><span class="fa fa-trash"></span></a></td>';
+                        echo '<tr><th scope="row">'. $apis[$i][characterName] .'</th><td>'. $apis[$i][characterID] .'</td><td>'. $apis[$i][tokenType] .'</td><td class="text-right">';
+                        if ($apis[$i][primary] == 0) { echo '<a href="?charid='. $apis[$i][characterID] .'" class="btn btn-outline-danger mr-2" role="button">Primary</a>'; }
+                        if ($apis[$i][primary] == 1) { echo '<a href="" class="btn btn-outline-danger active mr-2" role="button">Primary</a>'; }
+                        echo '<a href="" class="btn btn-outline-danger"><span class="fa fa-trash"></span></a></td>';
                     }
                 ?>
                 </tbody>

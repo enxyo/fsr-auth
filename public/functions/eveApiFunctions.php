@@ -67,7 +67,7 @@ function storeApi($CharacterID,$CharacterName,$TokenType,$access_token,$refresh_
     $db = new Database();
 
     // prepare statement
-    $db->query("INSERT INTO api_tokens (api_tokens.characterID, api_tokens.accessToken, api_tokens.refreshToken, api_tokens.characterName, api_tokens.tokenType, api_tokens.authUserId) VALUES (:CharacterID, :accessToken, :refreshToken, :characterName, :tokenType, :authUserId)");
+    $db->query("INSERT INTO api_tokens (api_tokens.characterID, api_tokens.accessToken, api_tokens.refreshToken, api_tokens.characterName, api_tokens.tokenType, api_tokens.authUserId, api_tokens.primary) VALUES (:CharacterID, :accessToken, :refreshToken, :characterName, :tokenType, :authUserId, :primary)");
     // bind values
     $db->bind(':CharacterID', $CharacterID);
     $db->bind(':accessToken', $access_token);
@@ -75,8 +75,27 @@ function storeApi($CharacterID,$CharacterName,$TokenType,$access_token,$refresh_
     $db->bind(':characterName', $CharacterName);
     $db->bind(':tokenType', $TokenType);
     $db->bind(':authUserId', $authUserId);
+    $db->bind(':primary', "0");
     // execute
     $db->execute();
+}
+
+function setPrimaryChar($CharacterID,$authUserId) {
+
+    $db = new Database();
+
+    // clear primarys
+    $db->query("UPDATE api_tokens SET api_tokens.primary = :primary WHERE api_tokens.authUserId = :authUserId");
+    $db->bind(':authUserId', $authUserId);
+    $db->bind(':primary', "0");
+    $db->execute();
+
+    // set new primary
+    $db->query("UPDATE api_tokens SET api_tokens.primary = :primary WHERE api_tokens.characterID = :CharacterID");
+    $db->bind(':CharacterID', $CharacterID);
+    $db->bind(':primary', "1");
+    $db->execute();
+
 }
 
 ?>
