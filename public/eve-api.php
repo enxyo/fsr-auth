@@ -2,6 +2,7 @@
 require_once 'config/db.php';
 require_once 'config/eveApi.php';
 require_once 'classes/authTokenCollection.php';
+require_once 'functions/eveApiFunctions.php';
 
 $db = new Database();
 
@@ -22,6 +23,14 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
     // check auth token in db
     if ($db->rowCount() == 1) {
         $userid = $checkToken['userid'];
+
+        // ### process returned api from ccp
+        if(isset($_GET['code']) && $_GET['code'] !== ''){
+            $tokens = json_decode(authInit($_GET['code'],$client_id,$client_secret), TRUE);
+            $char = json_decode(getCharId($tokens['access_token']), TRUE);
+
+            storeApi($char['CharacterID'], $char['CharacterName'], $char['TokenType'], $tokens['access_token'], $tokens['refresh_token'], $userid);
+        }
 
         // prepare statement
         $db->query("SELECT * FROM users WHERE users.id = :id");
