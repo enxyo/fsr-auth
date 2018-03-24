@@ -1,8 +1,7 @@
 <?php
 require_once 'config/db.php';
-require_once 'config/eveApi.php';
 require_once 'classes/authTokenCollection.php';
-require_once 'functions/eveApiFunctions.php';
+
 
 $db = new Database();
 
@@ -24,35 +23,13 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
     if ($db->rowCount() == 1) {
         $userid = $checkToken['userid'];
 
-        // ### process returned api from ccp
-        if(isset($_GET['code']) && $_GET['code'] !== ''){
-            $tokens = json_decode(authInit($_GET['code'],$client_id,$client_secret), TRUE);
-            $char = json_decode(getCharId($tokens['access_token']), TRUE);
-
-            storeApi($char['CharacterID'], $char['CharacterName'], $char['TokenType'], $tokens['access_token'], $tokens['refresh_token'], $userid);
-        }
-
-        // ### set primary char
-        if(isset($_GET['charid']) && $_GET['charid'] !== ''){
-
-            setPrimaryChar($_GET['charid'],$userid);
-
-        }
 
 
-        // prepare statement
+        // get user
         $db->query("SELECT * FROM users WHERE users.id = :id");
-        // bind values
         $db->bind(':id', $userid);
-        // execute
         $getUser = $db->single();
 
-        // get api
-        $db->query("SELECT * FROM api_tokens WHERE api_tokens.authUserId = :id");
-        $db->bind(':id', $userid);
-        $apis = $db->resultset();
-
-        $api_count = $db->rowCount();
 
     } else {
         unset($_COOKIE['fsrAuthCookie']);
@@ -90,7 +67,7 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
         <script>
-            window.history.replaceState({}, document.title, "/auth/eve-api");
+            window.history.replaceState({}, document.title, "/auth/account");
         </script>
 
     </head>
@@ -115,27 +92,70 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
         </header>
         <!-- Begin page content -->
         <main role="main" class="container dash-content">
-            <table class="table table-striped table-dark">
-                <thead>
-                    <tr>
-                        <th scope="col">Character</th>
-                        <th scope="col">CharacterID</th>
-                        <th scope="col">Type</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php
-                    for ($i = 0; $i < $api_count; $i++) {
-                        echo '<tr><th scope="row">'. $apis[$i][characterName] .'</th><td>'. $apis[$i][characterID] .'</td><td>'. $apis[$i][tokenType] .'</td><td class="text-right">';
-                        if ($apis[$i][primary] == 0) { echo '<a href="?charid='. $apis[$i][characterID] .'" class="btn btn-outline-danger mr-2" role="button">Primary</a>'; }
-                        if ($apis[$i][primary] == 1) { echo '<a href="" class="btn btn-outline-danger active mr-2" role="button">Primary</a>'; }
-                        echo '<a href="" class="btn btn-outline-danger"><span class="fa fa-trash"></span></a></td>';
-                    }
-                ?>
-                </tbody>
-            </table>
-            <a href="<?php echo $apiAuthUrl ?>" role="button" class="btn btn-outline-danger">API hinzufügen</a>
+            <h1 class="h3 text-uppercase text-light font-weight-normal">Settings</h1>
+            <hr></hr>
+            <h1 class="h4 text-light font-weight-normal">Forum</h1>
+            <div class="" id="linked_yes"></div>
+            <div class="" id="linked_no"></div>
+            <div class="row">
+                <div class="col-sm-6 text-light">
+                    Forum Anzeigename
+                </div>
+                <div class="col-sm-4">
+                    <a href="" role="button" class="btn btn-outline-danger">ändern</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10 text-light">
+                    EVE Note
+                </div>
+            </div>
+            <hr></hr>
+            <h1 class="h4 text-light font-weight-normal">Account</h1>
+            <div class="row">
+                <div class="col-sm-2 text-light">
+                    Email
+                </div>
+                <div class="col-sm-4 text-muted">
+                    <?php echo $getUser['email'] ?>
+                </div>
+                <div class="col-sm-4">
+                    <a href="" role="button" class="btn btn-outline-danger">ändern</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 text-light">
+                    Password
+                </div>
+                <div class="col-sm-4">
+                    <a href="" role="button" class="btn btn-outline-danger">ändern</a>
+                </div>
+            </div>
+            <hr></hr>
+            <div class="row">
+                <div class="col-sm-6 text-light">
+                    Registriert seit
+                </div>
+                <div class="col-sm-2 text-muted">
+                    <?php echo $getUser['created']; ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 text-light">
+                    Letzter login
+                </div>
+                <div class="col-sm-2 text-muted">
+                    <?php echo $getUser['created']; ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 text-light">
+                    Fehlgeschlagene Logins in der letzten Woche
+                </div>
+                <div class="col-sm-2 text-muted">
+                    <?php echo $getUser['created']; ?>
+                </div>
+            </div>
         </main>
         <footer class="footer">
             <div class="container">

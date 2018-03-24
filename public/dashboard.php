@@ -76,7 +76,7 @@ if (isset($_COOKIE['fsrAuthCookie'])) {
                     </div>
                     <div class="col-md text-right">
                         <span class="text-muted m-3"><?php echo $getUser['email']; ?></span>
-                        <a href="#" class="btn btn-outline-danger">
+                        <a href="account" class="btn btn-outline-danger">
                             <span class="fa fa-cog"></span>
                         </a>
                         <a href="logout" role="button" class="btn btn-outline-danger">Logout</a>
