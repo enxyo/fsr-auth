@@ -66,6 +66,12 @@ function storeApi($CharacterID,$CharacterName,$TokenType,$access_token,$refresh_
 
     $db = new Database();
 
+    // check for first entry
+    $db->query("SELECT * FROM api_tokens WHERE api_tokens.authUserId = :authUserId");
+    $db->bind(':authUserId', $authUserId);
+    $db->execute();
+    $numRows = $db->rowCount();
+
     // prepare statement
     $db->query("INSERT INTO api_tokens (api_tokens.characterID, api_tokens.accessToken, api_tokens.refreshToken, api_tokens.characterName, api_tokens.tokenType, api_tokens.authUserId, api_tokens.primary) VALUES (:CharacterID, :accessToken, :refreshToken, :characterName, :tokenType, :authUserId, :primary)");
     // bind values
@@ -75,7 +81,11 @@ function storeApi($CharacterID,$CharacterName,$TokenType,$access_token,$refresh_
     $db->bind(':characterName', $CharacterName);
     $db->bind(':tokenType', $TokenType);
     $db->bind(':authUserId', $authUserId);
-    $db->bind(':primary', "0");
+    if ($numRows == 0) {
+        $db->bind(':primary', "1");
+    } else {
+        $db->bind(':primary', "0");
+    }
     // execute
     $db->execute();
 }
